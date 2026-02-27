@@ -25,8 +25,12 @@ class CollectorSettings(BaseSettings):
 
     # Multi-tenant app registration (registered in home tenant)
     CLIENT_ID: str = Field(..., description="Application (client) ID of the multi-tenant app")
-    CERTIFICATE_PATH: str = Field(..., description="Path to the PEM certificate file (private key)")
-    CERTIFICATE_THUMBPRINT: str = Field(..., description="X509 certificate SHA-1 thumbprint")
+
+    # Certificate source — Key Vault (preferred) or local file
+    KEY_VAULT_URL: str = Field(default="", description="Key Vault URL to fetch the collector cert from, e.g. https://<vault>.vault.azure.net/")
+    CERTIFICATE_NAME: str = Field(default="", description="Name of the certificate in Key Vault")
+    CERTIFICATE_PATH: str = Field(default="", description="Local path to PEM private key (fallback if KEY_VAULT_URL not set)")
+    CERTIFICATE_THUMBPRINT: str = Field(default="", description="SHA-1 thumbprint (fallback if KEY_VAULT_URL not set)")
 
     # Target tenant for this collection run
     TENANT_ID: str = Field(..., description="Customer tenant GUID to collect from")
@@ -39,6 +43,10 @@ class CollectorSettings(BaseSettings):
     # mTLS client cert for Function App (optional, for mTLS-enabled deployments)
     FUNCTION_APP_CERT_PATH: str = Field(default="", description="Client cert PEM for mTLS to Function App")
     FUNCTION_APP_CERT_KEY_PATH: str = Field(default="", description="Client cert private key for mTLS")
+
+    @property
+    def use_key_vault(self) -> bool:
+        return bool(self.KEY_VAULT_URL and self.CERTIFICATE_NAME)
 
     @property
     def graph_base(self) -> str:
