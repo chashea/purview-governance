@@ -4,10 +4,13 @@ on:
   push:
     branches: [main]
     paths: ['functions/**']
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Skip if FUNCTION_APP_NAME hasn't been configured yet (pre-infrastructure)
+    if: vars.FUNCTION_APP_NAME != ''
     steps:
       - uses: actions/checkout@v4
 
