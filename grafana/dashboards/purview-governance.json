@@ -1,0 +1,375 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "id": 1,
+      "title": "Avg Compliance Score (Statewide)",
+      "type": "gauge",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
+      "datasource": { "uid": "azure-table-ds", "type": "yesoreyeram-infinity-datasource" },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 40 },
+              { "color": "yellow", "value": 60 },
+              { "color": "green", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["mean"], "fields": "/^ComplianceScorePct$/", "values": false },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "url": "https://${storage_account}.table.core.windows.net/AgencyPostureSnapshot()",
+          "url_options": { "method": "GET" },
+          "columns": [
+            { "selector": "ComplianceScorePct", "text": "ComplianceScorePct", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Avg Label Coverage (Statewide)",
+      "type": "gauge",
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
+      "datasource": { "uid": "azure-table-ds", "type": "yesoreyeram-infinity-datasource" },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 40 },
+              { "color": "yellow", "value": 60 },
+              { "color": "green", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["mean"], "fields": "/^LabelCoveragePct$/", "values": false }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "url": "https://${storage_account}.table.core.windows.net/AgencyPostureSnapshot()",
+          "columns": [
+            { "selector": "LabelCoveragePct", "text": "LabelCoveragePct", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Total DLP Incidents (30d)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "uid": "azure-table-ds", "type": "yesoreyeram-infinity-datasource" },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 10 },
+              { "color": "red", "value": 50 }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["sum"], "fields": "/^DlpIncidents30d$/", "values": false },
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "url": "https://${storage_account}.table.core.windows.net/AgencyPostureSnapshot()",
+          "columns": [
+            { "selector": "DlpIncidents30d", "text": "DlpIncidents30d", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Total External Sharing Events",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 0 },
+      "datasource": { "uid": "azure-table-ds", "type": "yesoreyeram-infinity-datasource" },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 100 },
+              { "color": "red", "value": 500 }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["sum"], "fields": "/^ExternalSharingCount$/", "values": false },
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "url": "https://${storage_account}.table.core.windows.net/AgencyPostureSnapshot()",
+          "columns": [
+            { "selector": "ExternalSharingCount", "text": "ExternalSharingCount", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Compliance Score by Agency",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "datasource": { "uid": "azure-table-ds", "type": "yesoreyeram-infinity-datasource" },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 40 },
+              { "color": "yellow", "value": 60 },
+              { "color": "green", "value": 80 }
+            ]
+          }
+        }
+      },
+      "options": {
+        "orientation": "horizontal",
+        "showValue": "always",
+        "barWidth": 0.8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "url": "https://${storage_account}.table.core.windows.net/AgencyPostureSnapshot()",
+          "columns": [
+            { "selector": "PartitionKey", "text": "Agency", "type": "string" },
+            { "selector": "ComplianceScorePct", "text": "Compliance %", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Label Coverage by Agency",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 6 },
+      "datasource": { "uid": "azure-table-ds", "type": "yesoreyeram-infinity-datasource" },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 40 },
+              { "color": "green", "value": 70 }
+            ]
+          }
+        }
+      },
+      "options": {
+        "orientation": "horizontal",
+        "showValue": "always"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "url": "https://${storage_account}.table.core.windows.net/AgencyPostureSnapshot()",
+          "columns": [
+            { "selector": "PartitionKey", "text": "Agency", "type": "string" },
+            { "selector": "LabelCoveragePct", "text": "Label Coverage %", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "DLP Incidents by Agency (30 / 60 / 90 Days)",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 14 },
+      "datasource": { "uid": "azure-table-ds", "type": "yesoreyeram-infinity-datasource" },
+      "options": {
+        "showHeader": true,
+        "sortBy": [{ "displayName": "30d", "desc": true }]
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "url": "https://${storage_account}.table.core.windows.net/AgencyPostureSnapshot()",
+          "columns": [
+            { "selector": "PartitionKey", "text": "Agency", "type": "string" },
+            { "selector": "DlpIncidents30d", "text": "30d", "type": "number" },
+            { "selector": "DlpIncidents60d", "text": "60d", "type": "number" },
+            { "selector": "DlpIncidents90d", "text": "90d", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Insider Risk Alerts by Agency",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 14 },
+      "datasource": { "uid": "azure-table-ds", "type": "yesoreyeram-infinity-datasource" },
+      "options": {
+        "showHeader": true,
+        "sortBy": [{ "displayName": "Total", "desc": true }]
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "url": "https://${storage_account}.table.core.windows.net/AgencyPostureSnapshot()",
+          "columns": [
+            { "selector": "PartitionKey", "text": "Agency", "type": "string" },
+            { "selector": "InsiderRiskHigh", "text": "High", "type": "number" },
+            { "selector": "InsiderRiskMedium", "text": "Medium", "type": "number" },
+            { "selector": "InsiderRiskLow", "text": "Low", "type": "number" },
+            { "selector": "InsiderRiskTotal", "text": "Total", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Retention Coverage by Agency",
+      "type": "barchart",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 22 },
+      "datasource": { "uid": "azure-table-ds", "type": "yesoreyeram-infinity-datasource" },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 40 },
+              { "color": "green", "value": 70 }
+            ]
+          }
+        }
+      },
+      "options": { "orientation": "horizontal", "showValue": "always" },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "url": "https://${storage_account}.table.core.windows.net/AgencyPostureSnapshot()",
+          "columns": [
+            { "selector": "PartitionKey", "text": "Agency", "type": "string" },
+            { "selector": "RetentionCoveragePct", "text": "Retention %", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Compliance Assessments by Regulation",
+      "type": "table",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 22 },
+      "datasource": { "uid": "azure-table-ds", "type": "yesoreyeram-infinity-datasource" },
+      "options": {
+        "showHeader": true,
+        "sortBy": [{ "displayName": "Score", "desc": false }]
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "url": "https://${storage_account}.table.core.windows.net/AssessmentSummary()",
+          "columns": [
+            { "selector": "PartitionKey", "text": "Agency", "type": "string" },
+            { "selector": "Regulation", "text": "Regulation", "type": "string" },
+            { "selector": "DisplayName", "text": "Assessment", "type": "string" },
+            { "selector": "ComplianceScore", "text": "Score", "type": "number" },
+            { "selector": "PassedControls", "text": "Passed", "type": "number" },
+            { "selector": "FailedControls", "text": "Failed", "type": "number" },
+            { "selector": "TotalControls", "text": "Total", "type": "number" },
+            { "selector": "PassRate", "text": "Pass Rate %", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "AI Executive Agent",
+      "type": "text",
+      "gridPos": { "h": 8, "w": 16, "x": 0, "y": 30 },
+      "options": {
+        "mode": "html",
+        "content": "<div style=\"font-family: sans-serif; padding: 10px;\">\n  <h3 style=\"margin-top:0\">Ask the AI Governance Advisor</h3>\n  <p style=\"color: #888; font-size: 12px;\">Queries aggregated metadata only — no PII or document content.</p>\n  <textarea id=\"ai-question\" rows=\"3\" style=\"width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; font-size:14px;\" placeholder=\"e.g., Which agencies have the lowest compliance scores and what should they prioritize?\"></textarea>\n  <br/>\n  <button onclick=\"(async()=>{const q=document.getElementById('ai-question').value;const r=document.getElementById('ai-response');r.innerText='Analyzing...';try{const res=await fetch('/api/ai/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});const data=await res.json();r.innerText=data.answer||data.error||'No response';}catch(e){r.innerText='Error: '+e.message;}})()\" style=\"margin-top:8px; padding:8px 20px; background:#1a3c6e; color:white; border:none; border-radius:4px; cursor:pointer; font-size:14px;\">Ask Agent</button>\n  <div id=\"ai-response\" style=\"margin-top:12px; padding:12px; background:#f5f5f5; border-radius:4px; white-space:pre-wrap; font-size:13px; min-height:60px;\">Response will appear here...</div>\n</div>"
+      }
+    },
+    {
+      "id": 12,
+      "title": "Executive Summary",
+      "type": "text",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 30 },
+      "options": {
+        "mode": "html",
+        "content": "<div style=\"font-family: sans-serif; padding: 10px; text-align: center;\">\n  <h3>Generate Executive Report</h3>\n  <p style=\"color: #888; font-size: 12px;\">AI-generated summary with statewide metrics.<br/>Metadata only — suitable for CISO/CIO briefings.</p>\n  <a href=\"/api/report\" target=\"_blank\" style=\"display:inline-block; margin:10px 5px; padding:12px 24px; background:#1a3c6e; color:white; text-decoration:none; border-radius:4px; font-size:14px;\">Download PDF</a>\n  <a href=\"/api/report?format=pptx\" target=\"_blank\" style=\"display:inline-block; margin:10px 5px; padding:12px 24px; background:#2d5aa0; color:white; text-decoration:none; border-radius:4px; font-size:14px;\">Download PPTX</a>\n</div>"
+      }
+    }
+  ],
+  "refresh": "5m",
+  "schemaVersion": 39,
+  "tags": ["purview", "compliance", "gcc"],
+  "templating": {
+    "list": [
+      {
+        "name": "storage_account",
+        "type": "textbox",
+        "label": "Storage Account",
+        "current": { "value": "purviewgovstorage" },
+        "options": [{ "text": "purviewgovstorage", "value": "purviewgovstorage" }]
+      }
+    ]
+  },
+  "time": { "from": "now-30d", "to": "now" },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "Purview Governance Dashboard",
+  "uid": "purview-governance",
+  "version": 1
+}

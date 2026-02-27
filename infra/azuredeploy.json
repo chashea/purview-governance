@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "templateHash": "REGENERATE_WITH_AZ_BICEP_BUILD"
+    },
+    "description": "Purview Governance — Azure Commercial infrastructure. Generate this file from main.bicep: az bicep build --file infra/main.bicep --outfile infra/azuredeploy.json"
+  },
+  "parameters": {
+    "environmentName": {
+      "type": "string",
+      "defaultValue": "prod",
+      "allowedValues": ["dev", "prod"],
+      "metadata": { "description": "Environment name (dev or prod)" }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": { "description": "Azure region for all resources" }
+    },
+    "allowedTenantIds": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": { "description": "Comma-separated list of allowed GCC tenant GUIDs for ingestion" }
+    },
+    "allowedCertThumbprints": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": { "description": "Comma-separated list of allowed certificate SHA-1 thumbprints" }
+    },
+    "openAiDeploymentModel": {
+      "type": "string",
+      "defaultValue": "gpt-4o",
+      "metadata": { "description": "Azure OpenAI model deployment name" }
+    },
+    "deployerObjectId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": { "description": "Entra ID object ID of the deployer (for Key Vault access)" }
+    },
+    "grafanaAdminGroupId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": { "description": "Entra ID group object ID for Grafana Admin role" }
+    },
+    "grafanaEditorGroupId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": { "description": "Entra ID group object ID for Grafana Editor role" }
+    },
+    "grafanaViewerGroupId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": { "description": "Entra ID group object ID for Grafana Viewer role" }
+    }
+  },
+  "resources": [],
+  "_NOTE": "This is a placeholder. Regenerate from Bicep: az bicep build --file infra/main.bicep --outfile infra/azuredeploy.json"
+}

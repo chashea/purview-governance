@@ -1,0 +1,6 @@
+msal>=1.28.0
+requests>=2.32.0
+pydantic>=2.6.0
+pydantic-settings>=2.2.0
+click>=8.1.0
+cryptography>=42.0.0

@@ -1,0 +1,14 @@
+apiVersion: 1
+datasources:
+  - name: AzureTableStorage
+    uid: azure-table-ds
+    type: yesoreyeram-infinity-datasource
+    access: proxy
+    isDefault: true
+    jsonData:
+      auth_method: azure
+      azure_cloud: azurepublic
+    secureJsonData:
+      azureClientId: ${GRAFANA_AZURE_CLIENT_ID}
+      azureClientSecret: ${GRAFANA_AZURE_CLIENT_SECRET}
+      azureTenantId: ${GRAFANA_AZURE_TENANT_ID}

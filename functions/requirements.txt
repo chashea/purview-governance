@@ -1,0 +1,10 @@
+azure-functions>=1.21.0
+azure-identity>=1.15.0
+azure-data-tables>=12.5.0
+azure-keyvault-secrets>=4.8.0
+openai>=1.30.0
+jsonschema>=4.21.0
+pydantic>=2.6.0
+pydantic-settings>=2.2.0
+reportlab>=4.1.0
+python-pptx>=0.6.23

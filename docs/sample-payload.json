@@ -1,0 +1,105 @@
+{
+  "tenant_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "agency_id": "dept-of-education",
+  "timestamp": "2026-02-26T14:30:00+00:00",
+
+  "label_coverage_pct": 72.5,
+  "unlabeled_sensitive_count": 143,
+  "dlp_incidents_30d": 15,
+  "dlp_incidents_60d": 28,
+  "dlp_incidents_90d": 45,
+  "external_sharing_count": 234,
+  "retention_policy_count": 8,
+  "retention_coverage_pct": 65.0,
+  "insider_risk_high": 2,
+  "insider_risk_medium": 5,
+  "insider_risk_low": 12,
+  "insider_risk_total": 19,
+
+  "label_taxonomy": [
+    {
+      "label_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "label_name": "Public",
+      "parent_label_id": null,
+      "tooltip": "Unrestricted information suitable for public distribution"
+    },
+    {
+      "label_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+      "label_name": "Internal",
+      "parent_label_id": null,
+      "tooltip": "For internal use within the agency"
+    },
+    {
+      "label_id": "6ba7b811-9dad-11d1-80b4-00c04fd430c8",
+      "label_name": "Confidential",
+      "parent_label_id": null,
+      "tooltip": "Sensitive information requiring protection"
+    },
+    {
+      "label_id": "6ba7b812-9dad-11d1-80b4-00c04fd430c8",
+      "label_name": "Confidential - PII",
+      "parent_label_id": "6ba7b811-9dad-11d1-80b4-00c04fd430c8",
+      "tooltip": "Contains personally identifiable information"
+    },
+    {
+      "label_id": "6ba7b813-9dad-11d1-80b4-00c04fd430c8",
+      "label_name": "Restricted - FERPA",
+      "parent_label_id": null,
+      "tooltip": "Student education records protected under FERPA"
+    },
+    {
+      "label_id": "6ba7b814-9dad-11d1-80b4-00c04fd430c8",
+      "label_name": "Restricted - CJIS",
+      "parent_label_id": null,
+      "tooltip": "Criminal justice information subject to CJIS Security Policy"
+    }
+  ],
+
+  "compliance_score_current": 72.0,
+  "compliance_score_max": 100.0,
+
+  "assessments": [
+    {
+      "assessment_id": "asmt-nist-800-53",
+      "regulation": "NIST 800-53 Rev 5",
+      "display_name": "NIST 800-53 Rev 5 Assessment",
+      "compliance_score": 68.0,
+      "passed_controls": 45,
+      "failed_controls": 12,
+      "total_controls": 57
+    },
+    {
+      "assessment_id": "asmt-hipaa",
+      "regulation": "HIPAA",
+      "display_name": "HIPAA Security Rule Assessment",
+      "compliance_score": 81.0,
+      "passed_controls": 34,
+      "failed_controls": 8,
+      "total_controls": 42
+    },
+    {
+      "assessment_id": "asmt-iso-27001",
+      "regulation": "ISO 27001:2022",
+      "display_name": "ISO 27001 Information Security Assessment",
+      "compliance_score": 59.0,
+      "passed_controls": 52,
+      "failed_controls": 36,
+      "total_controls": 88
+    },
+    {
+      "assessment_id": "asmt-fedramp-moderate",
+      "regulation": "FedRAMP Moderate",
+      "display_name": "FedRAMP Moderate Baseline Assessment",
+      "compliance_score": 74.0,
+      "passed_controls": 240,
+      "failed_controls": 85,
+      "total_controls": 325
+    }
+  ],
+
+  "improvement_actions_implemented": 20,
+  "improvement_actions_planned": 15,
+  "improvement_actions_not_started": 8,
+
+  "collector_version": "1.0.0"
+}
