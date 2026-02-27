@@ -46,6 +46,7 @@ Multi-tenant, metadata-only governance solution for M365 GCC (standard) customer
 │  For each consented tenant:                                                 │
 │  ┌─────────────────────────────────────────────────────────────────┐        │
 │  │ auth.py          → MSAL cert auth to target tenant              │        │
+│  │                    (cert fetched from Key Vault at runtime)     │        │
 │  │ purview_client   → GET label taxonomy, coverage %, DLP counts,  │        │
 │  │                    external sharing, retention gaps,             │        │
 │  │                    insider risk trend (counts only)              │        │
@@ -66,6 +67,7 @@ Multi-tenant, metadata-only governance solution for M365 GCC (standard) customer
 │  ┌──────────────────────────────┐  ┌──────────────────────────────┐        │
 │  │ ingest_posture (HTTP)        │  │ compute_aggregates (Timer)    │        │
 │  │ • Validate cert thumbprint   │  │ • Daily 6:00 AM UTC           │        │
+│  │   (optional — skipped in dev)│  │                               │        │
 │  │ • Check tenant allow-list    │  │ • Read all agency snapshots   │        │
 │  │ • Validate JSON schema       │  │ • Compute simple rollups of   │        │
 │  │ • Normalize labels to tiers  │  │   native scores               │        │
@@ -86,7 +88,8 @@ Multi-tenant, metadata-only governance solution for M365 GCC (standard) customer
 │ Azure Table Storage│  │ Azure Key Vault      │  │ Azure OpenAI         │
 │ *.table.core.      │  │ *.vault.azure.net    │  │ *.openai.azure.com   │
 │   windows.net      │  │                     │  │                      │
-│                    │  │ • Cert thumbprints  │  │ • GPT-4o deployment  │
+│                    │  │ • Collector cert    │  │ • GPT-4o deployment  │
+│                    │  │   (auto-generated)  │  │                      │
 │ Tables:            │  │ • Tenant allow-list │  │ • Metadata context   │
 │ • AgencyPosture    │  └─────────────────────┘  │   only (no PII)      │
 │   Snapshot         │                           └──────────────────────┘
@@ -121,10 +124,10 @@ Multi-tenant, metadata-only governance solution for M365 GCC (standard) customer
 Register the multi-tenant app in your home tenant. Generate admin consent URLs for each customer tenant. Customer Global Admin clicks the URL, signs in, and approves read-only permissions. No app registration is created in the customer tenant.
 
 ### 2. Collect
-The Python CLI collector authenticates to each consented tenant using certificate-based MSAL auth. It pulls metadata from Purview (labels, DLP counts, sharing, retention, insider risk trends) and Compliance Manager (scores, assessments, improvement actions) via the Microsoft Graph API.
+The Python CLI collector authenticates to each consented tenant using certificate-based MSAL auth. The certificate is stored in and fetched from Azure Key Vault at runtime — no local cert files required. It pulls metadata from Purview (labels, DLP counts, sharing, retention, insider risk trends) and Compliance Manager (scores, assessments, improvement actions) via the Microsoft Graph API.
 
 ### 3. Ingest
-The collector POSTs the JSON payload to the Azure Function App. The Function validates the client certificate thumbprint, checks the tenant ID against the allow-list, and validates the JSON schema. Invalid requests are rejected with detailed error messages.
+The collector POSTs the JSON payload to the Azure Function App using the function key for authentication. The Function optionally validates a client certificate thumbprint (if `ALLOWED_CERT_THUMBPRINTS` is configured), checks the tenant ID against the allow-list, and validates the JSON schema. Invalid requests are rejected with detailed error messages.
 
 ### 4. Normalize
 Sensitivity labels are normalized from tenant-specific names to standard tiers (Public / Internal / Confidential / Restricted) using keyword matching. All Purview and Compliance Manager scores are stored as-is — no custom risk formulas.
